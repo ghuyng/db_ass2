@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <%- include('../partials/head'); %>
+</head>
+<body class="container">
+
+<header>
+    <%- include('../partials/header'); %>
+</header>
+
+<main>
+    <div class="w3-content" style="max-width:2000px;margin-top:46px">
+        <h1 class="w3-padding-large w3-center">
+            DANH SÁCH CÁC NHÂN VIÊN
+        </h1>
+        <table class="w3-table w3-bordered w3-padding-64 w3-content w3-centered w3-hoverable" style="max-width: 1200px;">
+            <thead>
+              <tr>
+                <th scope="col">Mã nhân viên</th>
+                <th scope="col">Quốc tịch</th>
+                <th scope="col">Mã số cmnd</th>
+                <th scope="col">Mã số bảng công</th>
+                <th scope="col"></th>
+              </tr>
+            </thead>
+            <tbody>
+                <% empList.forEach((nhanvien) => { %>
+                    <tr>
+                        <td><%= nhanvien.manv %></td>
+                        <td><%= nhanvien.quoctich %></td>
+                        <td><%= nhanvien.masocmnd %></td>
+                        <td><%= nhanvien.masobangcong %></td>
+                        <td><a href="/nhanvien/<%= nhanvien.manv %>"> Xem chi tiết </a></td>
+                    </tr>
+                <% }) %>
+            </tbody>
+          </table>
+    </div>
+</main>
+
+<footer>
+    <%- include('../partials/footer'); %>
+</footer>
+
+<script>
+    <%- include('../partials/script'); %>
+</script>
+
+</body>
+</html>
