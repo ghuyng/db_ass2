@@ -23,7 +23,7 @@ const getUsers = (request, response) => {
 
 const getUserById = (request, response) => {
     const id = request.params.id
-    db.one('SELECT * FROM nhanvien WHERE manv=$1', [id])
+    db.one('SELECT * FROM nhanvien WHERE nv_manv=$1', [id])
         .then(data => {
             response.render('pages/nhanvien', {nhanvien: data})
         })
