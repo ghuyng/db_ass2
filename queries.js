@@ -4,9 +4,9 @@ const pgp = require('pg-promise')(initOption)
 const cn = {
     host: 'localhost',
     port: '5432',
-    database: 'ass2',
+    database: 'assign2',
     user: 'postgres',
-    password: 'postword',
+    password: 'trung1182000',
 }
 
 var db = pgp(cn)
@@ -23,7 +23,7 @@ const getUsers = (request, response) => {
 
 const getUserById = (request, response) => {
     const id = request.params.id
-    db.one('SELECT * FROM nhanvien WHERE manv=$1', [id])
+    db.one('SELECT * FROM nhanvien WHERE nv_manv=$1', [id])
         .then(data => {
             response.render('pages/nhanvien', {nhanvien: data})
         })
@@ -32,7 +32,18 @@ const getUserById = (request, response) => {
         })
 }
 
+const getContracts = (request, response) => {
+    db.any('SELECT * FROM hopdong')
+        .then(data => {
+            response.render('pages/ds_hopdong', {empList : data})
+        })
+        .catch(err =>{
+            response.status(404).send('Not Found')
+        })
+}
+
 module.exports = {
     getUsers,
     getUserById,
+    getContracts,
 }

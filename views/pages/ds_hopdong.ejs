@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <%- include('../partials/head'); %>
+</head>
+<body class="container">
+
+<header>
+    <%- include('../partials/header'); %>
+</header>
+
+<main>
+    <div class="w3-content" style="max-width:2000px;margin-top:46px">
+        <h1 class="w3-padding-large w3-center">
+            DANH SÁCH CÁC HỢP ĐỒNG
+        </h1>
+        <table class="w3-table w3-bordered w3-padding-64 w3-content w3-centered w3-hoverable" style="max-width: 1200px;">
+            <thead>
+              <tr>
+                <th scope="col">Mã hợp đồng</th>
+                <th scope="col">Tên</th>
+                <th scope="col">Trạng thái</th>
+                <th scope="col">Loại hợp đồng</th>
+                <th scope="col">Ngày bắt đầu</th>
+                <th scope="col">Ngày kết thúc</th>
+                <th scope="col">Mã công việc</th>
+                <th scope="col"></th>
+              </tr>
+            </thead>
+            <tbody>
+                <% empList.forEach((hopdong) => { %>
+                    <tr>
+                        <td><%= hopdong.hd_mahopdong %></td>
+                        <td><%= hopdong.hd_ten %></td>
+                        <td><%= hopdong.hd_trangthai %></td>
+                        <td><%= hopdong.hd_loaihopdong %></td>
+                        <td><%= hopdong.hd_ngaybatdau %></td>
+                        <td><%= hopdong.hd_ngayketthuc %></td>
+                        <td><%= hopdong.hd_macongviec %></td>
+                    </tr>
+                <% }) %>
+            </tbody>
+          </table>
+    </div>
+</main>
+
+<footer>
+    <%- include('../partials/footer'); %>
+</footer>
+
+<script>
+    <%- include('../partials/script'); %>
+</script>
+
+</body>
+</html>

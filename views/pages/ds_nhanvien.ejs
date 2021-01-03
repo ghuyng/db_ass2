@@ -27,11 +27,11 @@
             <tbody>
                 <% empList.forEach((nhanvien) => { %>
                     <tr>
-                        <td><%= nhanvien.manv %></td>
-                        <td><%= nhanvien.quoctich %></td>
-                        <td><%= nhanvien.masocmnd %></td>
-                        <td><%= nhanvien.masobangcong %></td>
-                        <td><a href="/nhanvien/<%= nhanvien.manv %>"> Xem chi tiết </a></td>
+                        <td><%= nhanvien.nv_manv %></td>
+                        <td><%= nhanvien.nv_quoctich %></td>
+                        <td><%= nhanvien.nv_masocmnd %></td>
+                        <td><%= nhanvien.nv_masobangcong %></td>
+                        <td><a href="/nhanvien/<%= nhanvien.nv_manv %>"> Xem chi tiết </a></td>
                     </tr>
                 <% }) %>
             </tbody>
