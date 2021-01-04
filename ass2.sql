@@ -34,6 +34,7 @@ create table PhongBan(
     PB_MaSo serial primary key ,
     PB_Ten varchar(50),
     PB_MaSoBoPhan int ,
+    pb_soluongduan int default 0,
     foreign key (PB_MaSoBoPhan) references BoPhan(BP_MaSo)
 );
 
@@ -111,11 +112,12 @@ create table NguoiLaoDong(
 create table NhanVien(
     NV_QuocTich varchar(50),
     NV_MaSoCMND varchar(9),
-    NV_MaNV varchar(5),
+    NV_MaNV varchar(5) unique,
     NV_QuocTich_NGS varchar(50),
     NV_MaSoCMND_NGS varchar(9),
-    NV_MaSoBangCong int not null ,
+    NV_MaSoBangCong int not null,
     primary key (NV_QuocTich, NV_MaSoCMND),
+    foreign key (NV_QuocTich, NV_MaSoCMND) references NguoiLaoDong(NLD_QuocTich, NLD_MaSoCMND),
     foreign key (NV_QuocTich_NGS, NV_MaSoCMND_NGS) references NhanVien(NV_QuocTich, NV_MaSoCMND),
     foreign key (NV_MaSoBangCong) references BangCong(BC_MaSo)
 );
@@ -124,7 +126,8 @@ create table NguoiXinViec(
     NXV_QuocTich varchar(50),
     NXV_MaSoCMND varchar(9),
     NXV_MaHoSoXinViec serial,
-    primary key (NXV_QuocTich, NXV_MaSoCMND)
+    primary key (NXV_QuocTich, NXV_MaSoCMND),
+    foreign key (NXV_QuocTich, NXV_MaSoCMND) references NguoiLaoDong(NLD_QuocTich, NLD_MaSoCMND)
 );
 
 create table BuoiPhongVan(
@@ -327,9 +330,7 @@ values ('Viet Nam', '261572930', '0815678495', 'nhanh@gmail.com','14 Lý Thườ
 
 insert into NhanVien (NV_QuocTich, NV_MaSoCMND, NV_MaNV, NV_QuocTich_NGS, NV_MaSoCMND_NGS, NV_MaSoBangCong)
 values ('Viet Nam', '261572930', '10001', null, null, 1),
-       ('Viet Nam', '261456738', '20001', 'Viet Nam', '261572930', 2),
-       ('USA', '100000000', '20001', 'Viet Nam', '261572930', 2),
-       ('Viet Nam', '100000001', '20002', 'Viet Nam', '261572930', 1);
+       ('Viet Nam', '261456738', '20001', 'Viet Nam', '261572930', 2);
 
 insert into NguoiXinViec (NXV_QuocTich, NXV_MaSoCMND)
 values ('America', '261456738'),
@@ -341,8 +342,7 @@ values (1, '301A', to_date('12/5/2020', 'dd/mm/yyyy'), 'Viet Nam', '261746589', 
 
 insert into Luong (L_QuocTich, L_MaSoCMND, L_LuongCoBan, L_HeSoLuong, L_HeSoPhuCap, L_SoNgayNghiKhongPhep, L_ChiPhiThueVaBaoHiem)
 values ('Viet Nam', '261572930', 1575::money, 6.2, 0.1, 1, 315),
-       ('Viet Nam', '261456738', 1665::money, 6.56, 0.1, 0, 333),
-       ('USA', '100000000', 1500::money, 6.56, 0.1, 0, 333);
+       ('Viet Nam', '261456738', 1665::money, 6.56, 0.1, 0, 333);
 
 insert into NguoiThan (NT_QuocTich_NV, NT_MaSoCMND_NV, NT_Ten, NT_MoiQuanHe)
 values ('Viet Nam', '261572930', 'Tô Trung Lưu', 'Cha'),
@@ -390,5 +390,151 @@ values ('45 hours', to_date('30/6/2002', 'dd/mm/yyyy'), 'Viet Nam', '261572930',
 
 insert into LamViecCho (LVC_QuocTich, LVC_MaSoCMND, LVC_MaHopDong, LVC_MaSoPhongBan)
 values ('Viet Nam', '261572930', 1, 1),
-       ('Viet Nam', '261456738', 2, 2),
-       ('Viet Nam', '100000001',  3, 2);
+       ('Viet Nam', '261456738', 2, 2);
+
+
+--insert some value
+insert into NguoiLaoDong (NLD_QuocTich, NLD_MaSoCMND, NLD_SDT, NLD_Email, NLD_DiaChi, NLD_GioiTinh, NLD_NgaySinh, NLD_Ho, NLD_TenDem, NLD_Ten)
+values ('Viet Nam', '261572931', '0815678496', 'nguyengiahuy@gmail.com','14 Lý Thường Kiệt, Q.10, TP.HCM', 'F', to_date('12/3/1990', 'dd/mm/yyyy'), 'Nguyễn', 'Gia', 'Huy');
+
+insert into BangCong (BC_GioVaoLamQuyDinh, BC_GioRaVeQuyDinh)
+values (time '08:30:00', time '17:00:00');
+
+insert into NhanVien (NV_QuocTich, NV_MaSoCMND, NV_MaNV, NV_QuocTich_NGS, NV_MaSoCMND_NGS, NV_MaSoBangCong)
+values ('Viet Nam', '261572931', '10002', 'Viet Nam', '261572930', 3);
+
+
+--insert some value
+insert into NguoiLaoDong (NLD_QuocTich, NLD_MaSoCMND, NLD_SDT, NLD_Email, NLD_DiaChi, NLD_GioiTinh, NLD_NgaySinh, NLD_Ho, NLD_TenDem, NLD_Ten)
+values ('Viet Nam', '261572932', '0815678497', 'letrungdan@gmail.com','14 Lý Thường Kiệt, Q.10, TP.HCM', 'M', to_date('12/3/2000', 'dd/mm/yyyy'), 'Lê', 'Trung', 'Đan');
+
+insert into BangCong (BC_GioVaoLamQuyDinh, BC_GioRaVeQuyDinh)
+values (time '08:30:00', time '17:00:00');
+
+insert into NhanVien (NV_QuocTich, NV_MaSoCMND, NV_MaNV, NV_QuocTich_NGS, NV_MaSoCMND_NGS, NV_MaSoBangCong)
+values ('Viet Nam', '261572932', '10003', 'Viet Nam', '261572930', 4);
+
+insert into ThamGiaTapHuan (TGTH_QuocTich, TGTH_MaSoCMND, TGTH_MaSoTapHuan, TGTH_VaiTro)
+values ('Viet Nam', '261572931', 1, 'Người tổ chức'),
+       ('Viet Nam', '261572932', 1, 'Tutor');
+
+--1a2
+insert into ThamGiaTapHuan (TGTH_QuocTich, TGTH_MaSoCMND, TGTH_MaSoTapHuan, TGTH_VaiTro)
+values ('Viet Nam', '261572931', 2, 'Người tổ chức');
+
+--1b2
+insert into TapHuan (TH_TenCTYDoiTac, TH_DiaDiem, TH_ThoiGian, TH_ChuDe, TH_MaSoPhongBan)
+values ('Vinamilk', 'Dĩ An, Binh Duong', to_date('15/12/2020', 'dd/mm/yyyy'), 'Tham quan', 1);
+
+insert into ThamGiaTapHuan (TGTH_QuocTich, TGTH_MaSoCMND, TGTH_MaSoTapHuan, TGTH_VaiTro)
+values ('Viet Nam', '261572931', 1, 'Người tổ chức');
+
+
+
+--2b :Thủ tục để insert dữ liệu vào bảng tập huấn:
+-- Tên công ty đối tác, địa điểm, thời gian, chủ đề, mã số phòng ban
+-- Nếu tên công ty để null thì hiển thị lỗi: Thiếu tên công ty
+-- Nếu địa điểm để null thì thay bằng giá trị: Chưa cập nhật
+-- Nếu thời gian null thì hiển thị lỗi: Thiếu thời gian
+-- Nếu chủ đề null thì thay thế bằng: Tìm hiểu công ty
+-- Nếu mã phòng ban null: Mã phòng ban không thể trống
+-- Nếu mã phòng ban không tồn tại: Mã phòng ban không tồn tại
+-- Nếu thời gian <= thời gian hiện tại: lỗi Thời gian này đã ở quá khứ.
+create or replace procedure p_insert_TapHuan  (
+    TenCTYDoiTac varchar(50),
+    DiaDiem varchar(50),
+    ThoiGian date,
+    ChuDe varchar(50),
+    MaSoPhongBan int) language plpgsql as $$
+begin
+    if TenCTYDoiTac is null then
+        RAISE EXCEPTION  'Thiếu tên công ty';
+    end if;
+    if DiaDiem is null then
+        DiaDiem := 'Chưa cập nhật';
+    end if;
+    if ThoiGian is null then
+        RAISE EXCEPTION  'Thiếu thời gian';
+    end if;
+	if ChuDe is null then
+		ChuDe := 'Tìm hiểu công ty';
+	end if;
+	if MaSoPhongBan is null then
+		RAISE EXCEPTION 'Mã phòng ban không thể trống';
+	end if;
+    if not exists(SELECT * FROM phongban 
+					WHERE PB_MaSo = MaSoPhongBan) then
+        RAISE EXCEPTION  'Mã phòng ban không tồn tại';
+    end if;
+	if ThoiGIan < current_date then
+		RAISE EXCEPTION 'Thời gian này đã ở quá khứ';
+	end if;
+    INSERT INTO TapHuan(TH_TenCTYDoiTac, TH_DiaDiem, TH_ThoiGian, TH_ChuDe, TH_MaSoPhongBan)
+    	values (TenCTYDoiTac, DiaDiem, ThoiGian, ChuDe, MaSoPhongBan);
+end;$$;
+
+CALL p_insert_TapHuan('Vinamilk', 'BK cs 1', date '2021-1-15', 'Thao luan ve cong ty', 1);
+
+
+insert into thamgiataphuan(tgth_quoctich, tgth_masocmnd, tgth_masotaphuan, tgth_vaitro)
+	values('Viet Nam', '261572930', 2, 'Tutol');
+
+insert into luong
+	values('Viet Nam', '261572931', 1575::money, 6.56, 0.1, 0, 333),
+	('Viet Nam', '261572932', 1575::money, 6.56, 0.1, 0, 333);
+
+
+create or replace procedure p_insert_TapHuan  (
+    TenCTYDoiTac varchar(50),
+    DiaDiem varchar(50),
+    ThoiGian date,
+    ChuDe varchar(50),
+ MaSoPhongBan int) language plpgsql as $$
+begin
+    if TenCTYDoiTac = '' then
+        RAISE EXCEPTION  'Thiếu tên công ty';
+    end if;
+    if DiaDiem = '' then
+        DiaDiem := 'Chưa cập nhật';
+    end if;
+    if ThoiGian is null then
+        RAISE EXCEPTION  'Thiếu thời gian';
+    end if;
+	if ChuDe = '' then
+		ChuDe := 'Tìm hiểu công ty';
+	end if;
+	if MaSoPhongBan is null then
+		RAISE EXCEPTION 'Mã phòng ban không thể trống';
+	end if;
+    if not exists(SELECT * FROM phongban 
+					WHERE PB_MaSo = MaSoPhongBan) then
+        RAISE EXCEPTION  'Mã phòng ban không tồn tại';
+    end if;
+	if ThoiGIan < current_date then
+		RAISE EXCEPTION 'Thời gian này đã ở quá khứ';
+	end if;
+	INSERT INTO TapHuan(TH_TenCTYDoiTac, TH_DiaDiem, TH_ThoiGian, TH_ChuDe, TH_MaSoPhongBan)
+		values(TenCTYDoiTac, DiaDiem, ThoiGian, ChuDe, MaSoPhongBan);
+end;$$;
+
+
+
+CREATE OR REPLACE FUNCTION f_TapHuan_Update() RETURNS TRIGGER AS $$
+BEGIN
+	if new.th_tenctydoitac = '' then
+		raise exception 'Cần nhập vào tên công ty đối tác';
+	end if;
+	if new.th_diadiem = '' then
+		new.th_diadiem = 'Chưa xác định';
+	end if;
+	if new.th_chude = '' then
+		new.th_chude = 'Chưa xác định';
+	end if;
+RETURN NEW;
+END; 
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER t_TapHuan_Update
+    Before update ON taphuan
+    FOR EACH ROW
+    EXECUTE PROCEDURE f_TapHuan_Update();
