@@ -34,6 +34,7 @@ create table PhongBan(
     PB_MaSo serial primary key ,
     PB_Ten varchar(50),
     PB_MaSoBoPhan int ,
+    pb_soluongduan int default 0,
     foreign key (PB_MaSoBoPhan) references BoPhan(BP_MaSo)
 );
 
@@ -111,11 +112,12 @@ create table NguoiLaoDong(
 create table NhanVien(
     NV_QuocTich varchar(50),
     NV_MaSoCMND varchar(9),
-    NV_MaNV varchar(5),
+    NV_MaNV varchar(5) unique ,
     NV_QuocTich_NGS varchar(50),
     NV_MaSoCMND_NGS varchar(9),
     NV_MaSoBangCong int not null ,
     primary key (NV_QuocTich, NV_MaSoCMND),
+    foreign key (NV_QuocTich, NV_MaSoCMND) references NguoiLaoDong(NLD_QuocTich, NLD_MaSoCMND),
     foreign key (NV_QuocTich_NGS, NV_MaSoCMND_NGS) references NhanVien(NV_QuocTich, NV_MaSoCMND),
     foreign key (NV_MaSoBangCong) references BangCong(BC_MaSo)
 );
@@ -124,7 +126,8 @@ create table NguoiXinViec(
     NXV_QuocTich varchar(50),
     NXV_MaSoCMND varchar(9),
     NXV_MaHoSoXinViec serial,
-    primary key (NXV_QuocTich, NXV_MaSoCMND)
+    primary key (NXV_QuocTich, NXV_MaSoCMND),
+    foreign key (NXV_QuocTich, NXV_MaSoCMND) references NguoiLaoDong(NLD_QuocTich, NLD_MaSoCMND)
 );
 
 create table BuoiPhongVan(
@@ -327,9 +330,7 @@ values ('Viet Nam', '261572930', '0815678495', 'nhanh@gmail.com','14 Lý Thườ
 
 insert into NhanVien (NV_QuocTich, NV_MaSoCMND, NV_MaNV, NV_QuocTich_NGS, NV_MaSoCMND_NGS, NV_MaSoBangCong)
 values ('Viet Nam', '261572930', '10001', null, null, 1),
-       ('Viet Nam', '261456738', '20001', 'Viet Nam', '261572930', 2),
-       ('USA', '100000000', '20001', 'Viet Nam', '261572930', 2),
-       ('Viet Nam', '100000001', '20002', 'Viet Nam', '261572930', 1);
+       ('Viet Nam', '261456738', '20001', 'Viet Nam', '261572930', 2);
 
 insert into NguoiXinViec (NXV_QuocTich, NXV_MaSoCMND)
 values ('America', '261456738'),
@@ -341,8 +342,7 @@ values (1, '301A', to_date('12/5/2020', 'dd/mm/yyyy'), 'Viet Nam', '261746589', 
 
 insert into Luong (L_QuocTich, L_MaSoCMND, L_LuongCoBan, L_HeSoLuong, L_HeSoPhuCap, L_SoNgayNghiKhongPhep, L_ChiPhiThueVaBaoHiem)
 values ('Viet Nam', '261572930', 1575::money, 6.2, 0.1, 1, 315),
-       ('Viet Nam', '261456738', 1665::money, 6.56, 0.1, 0, 333),
-       ('USA', '100000000', 1500::money, 6.56, 0.1, 0, 333);
+       ('Viet Nam', '261456738', 1665::money, 6.56, 0.1, 0, 333);
 
 insert into NguoiThan (NT_QuocTich_NV, NT_MaSoCMND_NV, NT_Ten, NT_MoiQuanHe)
 values ('Viet Nam', '261572930', 'Tô Trung Lưu', 'Cha'),
@@ -390,5 +390,243 @@ values ('45 hours', to_date('30/6/2002', 'dd/mm/yyyy'), 'Viet Nam', '261572930',
 
 insert into LamViecCho (LVC_QuocTich, LVC_MaSoCMND, LVC_MaHopDong, LVC_MaSoPhongBan)
 values ('Viet Nam', '261572930', 1, 1),
-       ('Viet Nam', '261456738', 2, 2),
-       ('Viet Nam', '100000001',  3, 2);
+       ('Viet Nam', '261456738', 2, 2);
+
+
+
+
+-------------- Cau 1 -------------------------
+-- a. Xem danh sach cac cong viec đang có o phong ban "Phat trien sp" sap xep theo ten cong viec
+select *
+from congviec join PhongBan on PB_MaSo = CV_MaSoPhongBan
+where PB_Ten = 'Phát triển sp'
+order by CV_TenCongViec;
+
+update congviec
+set cv_mota = 'Tìm hiểu nhu cầu khách hàng'
+where cv_tencongviec = 'Nghiên cứu thị trường';
+
+
+-- Xem danh sách các công việc đang được tuyển dụng ở phòng ban "Phát triển sp" săp xếp theo số lượng cần tuyển giảm dần
+select *
+from (congviec join DotTuyenDung on CV_MaCongViec = DTD_MaCongViec) join PhongBan on CV_MaSoPhongBan = PhongBan.PB_MaSo
+where PB_Ten = 'Phát triển sp' and DTD_NgayKetThuc >= current_date
+order by DTD_SoLuongCanTuyen DESC;
+
+
+-- b. Xem các công việc đang được tuyển dụng đã đủ số lượng người ứng tuyển
+select CV_TenCongViec, count(*) as sl_ung_tuyen, DTD_SoLuongCanTuyen
+from ((nguoixinviec join BuoiPhongVan BPV on NXV_QuocTich = BPV_QuocTich and NXV_MaSoCMND = BPV.BPV_MaSoCMND)
+    join DotTuyenDung on BPV_MaDot = DTD_MaDot)
+    join CongViec on DTD_MaCongViec = CV_MaCongViec
+where DTD_NgayKetThuc >= current_date
+group by cv_tencongviec, DTD_SoLuongCanTuyen
+having count(*) = DTD_SoLuongCanTuyen
+order by CV_TenCongViec;
+
+-- Xem phòng ban nào đang cần tuyển dụng nhiều hơn 5 người ở tất cả vị trí
+select PB_Ten, sum(DTD_SoLuongCanTuyen) as sl_can_tuyen
+from (PhongBan join CongViec on PB_MaSo = CV_MaSoPhongBan)
+        join DotTuyenDung on DTD_MaCongViec = CV_MaCongViec
+where DTD_NgayKetThuc >= current_date
+group by PB_Ten
+having sum(DTD_SoLuongCanTuyen) >= 5
+order by PB_Ten;
+
+
+
+---------------------- Cau 2 -------------------------
+-- Thủ tục hiển thị danh sách các công việc đang được tuyển dụng của phòng ban có mã số x
+-- với x là tham số đầu vào
+create or replace function p_view_recruiting_job(x int)
+returns table(masophongban int, tenphongban varchar, macongviec int, tencongviec varchar)
+as $$
+begin
+    return query
+    select PhongBan.PB_MaSo, PhongBan.PB_Ten, CongViec.CV_MaCongViec, CongViec.CV_TenCongViec
+    from (congviec join DotTuyenDung on CV_MaCongViec = DTD_MaCongViec) join PhongBan on CV_MaSoPhongBan = PhongBan.PB_MaSo
+    where PB_MaSo = x  and DTD_NgayKetThuc >= current_date
+    order by DTD_SoLuongCanTuyen DESC;
+end;
+    $$
+language plpgsql;
+
+select * from p_view_recruiting_job(1);
+select *
+from dottuyendung;
+-- Thủ tục để mở một đợt tuyển dụng mới
+create or replace procedure p_add_new_DotTuyenDung(
+    ngaybatdau date,
+    ngayketthuc date,
+    macongviec int,
+    soluongcantuyen int
+) as $$
+begin
+    if ngaybatdau is null or ngaybatdau < current_date then
+        ngaybatdau = current_date ;
+        raise notice 'Đã đặt ngày bắt đầu đợt tuyển dụng là ngày hôm nay: %', ngaybatdau;
+    end if;
+    if ngayketthuc is null or ngayketthuc < ngaybatdau then
+        raise exception 'Ngày kết thúc không hợp lệ';
+    end if;
+    if not exists(select * from congviec where CV_MaCongViec = macongviec) then
+        raise exception 'Công việc % không tồn tại', macongviec;
+    end if;
+    insert into dottuyendung (DTD_NgayBatDau, DTD_NgayKetThuc, DTD_MaCongViec, DTD_SoLuongCanTuyen)
+    values (ngaybatdau, ngayketthuc, macongviec, soluongcantuyen);
+end;
+    $$
+language plpgsql;
+
+call p_add_new_dottuyendung(null, date '1-12-2021', 2, 6);
+
+select * from nguoixinviec;
+
+select * from buoiphongvan;
+------------------- Cau 3 ----------------
+-- INSERT TRIGGER ---
+-- C
+
+
+--3a -----------------------
+-- Tạo Trigger Before insert trên bảng DuAn
+-- Nếu trạng thái dự án là null thì set thành On hold
+-- Nếu mã số phòng ban không tồn tại thì báo lỗi
+-- Nếu mã số phòng ban có tồn tại thì tăng số lượng dự án của phòng ban đó lên 1
+CREATE OR REPLACE FUNCTION f_DuAn_Insert() RETURNS TRIGGER AS $$
+BEGIN
+	if new.da_ten is null then
+		raise exception 'Cần đặt tên dự án';
+	end if;
+	if new.da_trangthai is null then
+		raise notice 'Trạng thái dự án mặc định: On hold';
+		new.da_trangthai = 'On hold';
+	end if;
+	if not exists(select * from phongban where pb_maso = new.da_masophongban) then
+		raise exception 'Phòng ban không tồn tại';
+	end if;
+	if new.da_masophongban is not null then
+		update phongban
+			set pb_soluongduan = pb_soluongduan + 1
+			where pb_maso = new.da_masophongban;
+	end if;
+RETURN NEW;
+END; 
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER t_DuAn_Insert
+    Before INSERT ON DuAn
+    FOR EACH ROW
+    EXECUTE PROCEDURE f_DuAn_Insert();
+
+insert into duan(da_ten, da_trangthai, da_masophongban)
+	values('Dự án 4/1/2021', null, 3);
+	
+--3b-----------------------
+-- Tạo Trigger Before Update trên bảng DuAn
+-- Nếu trạng thái dự án là null thì báo lỗi
+-- Nếu trạng thái dự án là null thì set thành On hold
+-- Nếu mã số phòng ban có tồn tại thì 
+--		không làm gì nếu mã mới = mã cũ, kết thúc trigger
+--		tăng số lượng dự án của phòng ban đó lên 1
+--		giảm số lượng dự án của phòng ban cũ đi 1
+CREATE OR REPLACE FUNCTION f_DuAn_Update() RETURNS TRIGGER AS $$
+BEGIN
+	if new.da_ten is null then
+		raise exception 'Tên dự án không được trống';
+	end if;
+	if new.da_trangthai is null then
+		raise notice 'Trạng thái dự án mặc định: On hold';
+		new.da_trangthai = 'On hold';
+	end if;
+	if new.da_masophongban is not null then
+		if new.da_masophongban = old.da_masophongban then
+			RETURN NEW;
+		end if;
+		
+		update phongban
+			set pb_soluongduan = pb_soluongduan - 1
+			where pb_maso = old.da_masophongban;
+		update phongban
+			set pb_soluongduan = pb_soluongduan + 1
+			where pb_maso = new.da_masophongban;
+	end if;
+RETURN NEW;
+END; 
+$$ LANGUAGE plpgsql;
+
+drop trigger t_DuAn_Update on Duan;
+CREATE TRIGGER t_DuAn_Update
+    Before Update ON DuAn
+    FOR EACH ROW
+    EXECUTE PROCEDURE f_DuAn_Update();
+
+select * from phongban;
+select * from duan;
+
+update duan
+	set da_masophongban = 2
+	where da_maso = '12';
+
+
+--3c: Tạo trigger after delete trên bảng DuAn
+-- Nếu xóa đi dự án có mã số phòng ban thì giảm số lượng dự án của phòng ban đó đi 1
+CREATE OR REPLACE FUNCTION f_DuAn_delete() RETURNS TRIGGER AS $$
+BEGIN
+	if old.da_masophongban is not null then	
+		update phongban
+			set pb_soluongduan = pb_soluongduan - 1
+			where pb_maso = old.da_masophongban;
+	end if;
+RETURN NEW;
+END; 
+$$ LANGUAGE plpgsql;
+
+drop trigger t_DuAn_Delete on Duan;
+CREATE TRIGGER t_DuAn_Delete
+    After Delete ON DuAn
+    FOR EACH ROW
+    EXECUTE PROCEDURE f_DuAn_Delete();
+
+select * from phongban;
+select * from duan;
+
+delete from duan
+	where da_maso = '12';
+
+--4
+-- Tăng lương cho các nhân viên đang làm việc ở masoduan, trả về tổng số nhân viên cần tăng lương
+-- Nếu masoduan không tồn tại, null thì hiển thị lỗi
+select * from duan;
+select * from luong;
+select * from lamviectren;
+
+CREATE OR REPLACE FUNCTION f_LamViecTren_TangLuong(masoduan int) 
+RETURNS int AS $$
+declare
+	soNhanVienCanTangLuong int;
+	r lamviectren%rowtype;
+BEGIN
+	soNhanVienCanTangLuong := 0;
+	if masoduan is null then
+		raise Exception 'Không thể xác định mã số dự án';
+	end if;
+	if not exists (select * from DuAn where da_maso = masoduan) then
+		raise Exception 'Dự án không tồn tại';
+	end if;
+	for r in
+		select * 
+		from lamviectren
+		where masoduan = lvt_masoduan
+	loop
+		soNhanVienCanTangLuong := soNhanVienCanTangLuong + 1;
+		update luong
+			set l_hesoluong = l_hesoluong + 0.2
+			where r.lvt_quoctich = l_quoctich and r.lvt_masocmnd = l_masocmnd;
+		continue;
+	end loop;
+	return soNhanVienCanTangLuong;
+END; 
+$$ LANGUAGE plpgsql;
+SELECT * FROM f_LamViecTren_TangLuong(2);
+SELECT * FROM f_LamViecTren_TangLuong(3);

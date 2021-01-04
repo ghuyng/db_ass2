@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <%- include('../partials/head'); %>
+</head>
+<body class="container">
+
+<header>
+    <%- include('../partials/header'); %>
+</header>
+
+<main>
+    <div class="w3-content" style="max-width:2000px;margin-top:46px">
+        <h1 class="w3-padding-large w3-center">
+            Danh sách nhân viên tham gia dự án <%= da_maso %>
+        </h1>
+        <table class="w3-table w3-padding-64 w3-content " style="max-width: 1200px;">
+            <thead>
+              <tr>
+                <th scope="col">Mã dự án</th>
+                <th scope="col">Tên đối tác</th>
+                <th scope="col"></th>
+              </tr>
+            </thead>
+            <tbody>
+                <% data.forEach((doitac) => { %>
+                <tr>
+                    <td><%= doitac.dt_masoduan %></td>
+                    <td><%= doitac.dt_tendoitac %></td>
+                    <td><a href="">
+                        <i class="fa fa-trash" aria-hidden="true" onclick="sendDelete(event, '<%= doitac.dt_tendoitac %>')"></i>
+                    </a>
+                    </td>
+                </tr>
+                <% }) %>
+            </tbody>
+          </table>
+          <div class="w3-center w3-margin-top">
+                <button class="w3-btn w3-blue" onclick="document.getElementById('post_modal').style.display='block'"><h4>Thêm đối tác</h4></a>
+          </div>
+            <div class="w3-modal" id="post_modal">
+                <div class="w3-modal-content w3-center" style="max-width: 500px;">
+                    <header class="w3-container w3-teal">
+                        <span onclick="document.getElementById('post_modal').style.display='none'"
+                        class="w3-button w3-display-topright">&times;</span>
+                        <h3 class="w3-center"><strong>THÊM ĐỐI TÁC VÀO DỰ ÁN</strong></h3>
+                    </header>
+                    <form class="w3-container" action="/duan/<%= da_maso %>/partner" method="POST">
+                        <label> Tên đối tác </label>
+                        <input class="w3-input" type="text" name="tendoitac">
+                        <input type="submit" class="w3-btn w3-blue w3-block w3-margin-top w3-margin-bottom" value="Lưu đối tác">
+                    </form>
+                </div>
+            </div>
+    </div>
+</main>
+
+<footer>
+    <%- include('../partials/footer'); %>
+</footer>
+
+<script>
+    <%- include('../partials/script'); %>
+
+    function sendDelete(event, tendoitac){
+        event.preventDefault();
+        $.ajax({
+            type: "DELETE",
+            url: `/duan/<%= da_maso %>/partner`,
+            data: {method: 'delete', tendoitac: tendoitac},
+            success: function (data) {
+                console.log(data);
+                window.location.reload();
+            },
+            error: function (data) {
+                console.log('Error:', data);
+            }
+        });
+    }
+</script>
+
+</body>
+</html>

@@ -131,15 +131,15 @@ const xoaDotTapHuan = (request, response) => {
 const updateTapHuan = (request, response) => {
     const id = request.params.id
     const {tenctydoitac, diadiem, thoigian, chude, masophongban} = request.body
-    db.one(`UPDATE taphuan 
-            SET th_tenctydoitac = ${tenctydoitac},
-                th_diadiem = ${diadiem},
-                th_thoigian = ${thoigian},
-                th_chude = ${chude},
-                th_masophongban = ${masophongban}
-            WHERE th_maso = $1`, [id])
+    db.any(`UPDATE taphuan 
+            SET th_tenctydoitac = $1,
+                th_diadiem = $2,
+                th_thoigian =$3 ,
+                th_chude = $4,
+                th_masophongban = $5
+            WHERE th_maso = $6`, [tenctydoitac, diadiem, thoigian, chude, masophongban, id])
         .then(data => {
-            response.status(200).redirect(`/taphuan/${id}`)
+            response.status(200).redirect(`/taphuan`)
         })
         .catch(err => {
             response.status(404).send(err.message)
@@ -173,6 +173,137 @@ const themNguoiTapHuan = (request, response) => {
         })
 }
 
+const viewProjectList = (request, response) => {
+    keyword = request.query.search?request.query.search:''
+    db.any(`SELECT *
+            FROM (duan JOIN phongban ON da_masophongban = pb_maso)
+            WHERE da_ten ~* '.*${keyword}.*'`)
+        .then(data => {
+            response.render('pages/ds_duan', {projects: data})
+        })
+        .catch(err => {
+            response.status(404).send(err.message)
+        })
+}
+
+const insertProject = (request, response) => {
+    const {ten, trangthai, masophongban} = request.body
+    db.any(`INSERT INTO duan(da_ten, da_trangthai, da_masophongban)
+            VALUES ($1, $2, $3)`, [ten, trangthai, masophongban])
+        .then(data => {
+            response.status(200).redirect('/duan')
+        })
+        .catch(err => {
+            response.status(404).send(err.message)
+        })
+}
+
+const getProjectEmployeeDetail = (request, response) => {
+    const id = request.params.id
+    db.any(`SELECT nv_manv, nld_ho|| ' '|| nld_tendem || ' ' || nld_ten as ten_nv, tgl_thoiluong, tgl_ngaytieptuc
+            FROM ((((duan JOIN lamviectren ON da_maso = lvt_masoduan) JOIN thoigianlam ON tgl_masoduan = da_maso)
+                     JOIN nhanvien ON lvt_quoctich = nv_quoctich AND lvt_masocmnd = nv_masocmnd)
+                     JOIN nguoilaodong ON nld_quoctich = nv_quoctich AND nld_masocmnd = nv_masocmnd)
+            WHERE da_maso = $1`, [id])
+        .then(data => {
+            response.render('pages/duan_nhanvien', {empList: data, da_maso: id})
+        })
+        .catch(err => {
+            response.status(404).send(err.message)
+        })
+}
+
+const getProjectPartnerDetail = (request, response) => {
+    const id = request.params.id
+    db.any(`SELECT *
+            FROM (duan JOIN doitac ON dt_masoduan = da_maso)
+            WHERE da_maso = $1`, [id])
+        .then(data => {
+            response.render('pages/duan_doitac', {data: data, da_maso: id})
+        })
+        .catch(err => {
+            response.status(404).send(err.message)
+        })
+}
+
+const addProjectPartner = (request, response) => {
+    const id = request.params.id
+    const tendoitac = request.body.tendoitac
+    db.any(`INSERT INTO doitac(dt_tendoitac, dt_masoduan) 
+            VALUES ($1, $2)`, [tendoitac, id])
+        .then(data => {
+            response.status(200).redirect(`/duan/${id}/partner`)
+        })
+        .catch(err => {
+            response.status(404).send(err.message)
+        })
+}
+
+const deleteProject = (request, response) => {
+    const id = request.params.id
+    db.query('DELETE FROM duan WHERE da_maso = $1', [id])
+        .then(data => {
+            response.status(200).send(data)
+        })
+        .catch(err => {
+            response.status(404).send(err.message)
+        })
+}
+
+const updateProject = (request, response) => {
+    const id = request.params.id
+    const {tenduan, trangthai, masophongban} = request.body
+    db.any(`UPDATE duan 
+            SET da_ten = $1,
+                da_trangthai = $2,
+                da_masophongban = $3
+            WHERE da_maso = $4`, [tenduan, trangthai, masophongban, id])
+        .then(data => {
+            response.status(200).redirect(`/duan`)
+        })
+        .catch(err => {
+            response.status(404).send(err.message)
+        })
+}
+
+const modifyProject = (request, response) => {
+    const id = request.params.id
+    db.one(`SELECT * FROM duan WHERE da_maso = $1`, [id])
+        .then(data => {
+            response.status(200).render('pages/form_update_duan', {data:data})
+        })
+        .catch(err => {
+            response.status(404).send(err.message)
+        })
+}
+
+const addEmployeeToProject = (request, response) => {
+    const {manv, vaitro} = request.body
+    const th_maso = request.params.id
+    db.task('insert_taphuan', async t => {
+        const nvien = await t.one(`SELECT nv_quoctich, nv_masocmnd FROM nhanvien WHERE nv_manv = $1`, [manv])
+        return t.any(`INSERT INTO thamgiataphuan(tgth_quoctich, tgth_masocmnd, tgth_masotaphuan, tgth_vaitro)
+                        VALUES ($1, $2, $3, $4)`, [nvien.nv_quoctich, nvien.nv_masocmnd, th_maso, vaitro])
+    })
+        .then(data => {
+            response.status(200).redirect(`/taphuan/${th_maso}`)
+        })
+        .catch(err => {
+            response.status(404).send(err.message)
+        })
+}
+
+const deleteProjectPartner = (request, response) => {
+    const id = request.params.id
+    const {tendoitac} = request.body
+    db.query('DELETE FROM doitac WHERE dt_tendoitac = $1 AND dt_masoduan = $2', [tendoitac, id])
+        .then(data => {
+            response.status(200).send(data)
+        })
+        .catch(err => {
+            response.status(404).send(err.message)
+        })
+}
 
 module.exports = {
     getUsers,
@@ -188,4 +319,14 @@ module.exports = {
     updateTapHuan,
     editTapHuan,
     themNguoiTapHuan,
+    viewProjectList,
+    insertProject,
+    deleteProject,
+    addEmployeeToProject,
+    updateProject,
+    modifyProject,
+    getProjectEmployeeDetail,
+    getProjectPartnerDetail,
+    addProjectPartner,
+    deleteProjectPartner,
 }

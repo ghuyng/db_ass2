@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <%- include('../partials/head'); %>
+</head>
+<body class="container">
+
+<header>
+    <%- include('../partials/header'); %>
+</header>
+
+<main>
+    <div class="w3-content" style="margin-top:100px; max-width: 500px;">
+        <h2 class="w3-center"> Thay đổi thông tin dự án </h2>
+        <form class="w3-container" action="/duan/<%= data.da_maso %>/update" method="POST">
+            <label>Tên dự án</label>
+            <input class="w3-input" type="text" name="tenduan" value="<%= data.da_ten %>">
+            <label>Trạng thái</label>
+            <input class="w3-input" type="text" name="trangthai" value="<%= data.da_trangthai %>">
+            <label>Mã số phòng ban<label>
+            <input class="w3-input" type="number" name="masophongban" value="<%= data.da_masophongban %>">
+            <input type="submit" class="w3-btn w3-blue w3-block w3-margin-top" value="Lưu thay đổi">
+        </form>
+    </div>
+</main>
+<footer>
+    <%- include('../partials/footer'); %>
+</footer>
+
+<script>
+    <%- include('../partials/script'); %>
+</script>
+
+</body>
+</html>

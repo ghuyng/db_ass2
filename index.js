@@ -20,6 +20,9 @@ app.get('/', (request, response) => {
 
 app.get('/nhanvien', db.getUsers)
 app.get('/nhanvien/:id', db.getUserById)
+
+
+// Routing for tuyen dung
 app.get('/tuyendung', db.getRecruitmentInfo)
 
 app.get('/tuyendung/new', (request, response) => {
@@ -33,6 +36,7 @@ app.get('/tuyendung/:id', db.getRecruitmentJobById)
 app.delete('/tuyendung/:id', db.deleteDotTuyenDung)
 
 
+//Routing for tap huan
 app.get('/taphuan', db.xemDSTapHuan)
 app.get('/taphuan/new', (request, response) =>{
     response.render('pages/form_motaphuan')
@@ -46,6 +50,21 @@ app.delete('/taphuan/:id', db.xoaDotTapHuan)
 app.get('/taphuan/:id/update', db.editTapHuan) 
 app.post('/taphuan/:id/update', db.updateTapHuan) 
 app.post('/taphuan/:id/add-employee/', db.themNguoiTapHuan) 
+
+
+// Routing for Du An
+app.get('/duan', db.viewProjectList)
+app.post('/duan/', db.insertProject)
+app.get('/duan/:id/employee', db.getProjectEmployeeDetail)
+app.post('/duan/:id/employee/', db.addEmployeeToProject) 
+app.get('/duan/:id/partner', db.getProjectPartnerDetail)
+app.post('/duan/:id/partner', db.addProjectPartner)
+app.delete('/duan/:id/partner', db.deleteProjectPartner)
+app.delete('/duan/:id', db.deleteProject)
+app.get('/duan/:id/update', db.modifyProject) 
+app.post('/duan/:id/update', db.updateProject) 
+app.post('/duan/:id/employee/', db.addEmployeeToProject) 
+
 
 
 app.listen(port, ()=>{

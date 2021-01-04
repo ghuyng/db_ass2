@@ -59,7 +59,6 @@
     <%- include('../partials/script'); %>
 
     function sendDelete(event, id){
-        console.log('dleted')
         event.preventDefault();
         // xhttp.open("DELETE", this.href, true);
         // xhttp.send(); 
@@ -72,8 +71,7 @@
                 window.location.reload();
             },
             error: function (data) {
-                console.log('Error:', data);
-                window.location.reload();
+                console.log('Error:', data.responseText);
             }
         });
     }
