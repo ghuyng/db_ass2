@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <%- include('../partials/head'); %>
+</head>
+<body class="container">
+
+<header>
+    <%- include('../partials/header'); %>
+</header>
+
+<main>
+    <div class="w3-content" style="margin-top:100px; max-width: 500px;">
+        <h2 class="w3-center"> Thêm buổi tập huấn mới </h2>
+        <form class="w3-container" action="/taphuan/new" method="POST">
+            <label>Tên công ty đối tác</label>
+            <input class="w3-input" type="text" name="tenctydoitac">
+            <label>Địa điểm</label>
+            <input class="w3-input" type="text" name="diadiem">
+            <label>Thời gian<label>
+            <input class="w3-input" type="date" name="thoigian">
+            <label>Chủ đề</label>
+            <input class="w3-input" type="text" name="chude">
+            <label>Mã số phòng ban</label>
+            <input class="w3-input" type="number" name="masophongban">
+            <input type="submit" class="w3-btn w3-blue w3-block w3-margin-top" value="Xác nhận">
+        </form>
+    </div>
+</main>
+<footer>
+    <%- include('../partials/footer'); %>
+</footer>
+
+<script>
+    <%- include('../partials/script'); %>
+</script>
+
+</body>
+</html>

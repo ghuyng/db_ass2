@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <%- include('../partials/head'); %>
+</head>
+<body class="container">
+
+<header>
+    <%- include('../partials/header'); %>
+</header>
+
+<main>
+    <div class="w3-content" style="max-width:2000px;margin-top:46px">
+        <h1 class="w3-padding-large w3-center">
+            Chi tiết công việc
+        </h1>
+        <table class="w3-table w3-padding-64 w3-content " style="max-width: 1200px;">
+            <thead>
+              <tr>
+                <th scope="col"></th>
+                <th scope="col"></th>
+              </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Tên công việc</td>
+                    <td><%= job.cv_tencongviec %></td>
+                </tr>
+                <tr>
+                    <td>Mô tả công việc</td>
+                    <td><%= job.cv_mota %></td>
+                </tr>
+                <tr>
+                    <td>Tên phòng ban</td>
+                    <td><%= job.pb_ten %></td>
+                </tr>
+                <tr>
+                    <td>Mã số bộ phận </td>
+                    <td><%= job.pb_masobophan %></td>
+                </tr>
+                <tr>
+                    <td>Số lượng cần tuyển </td>
+                    <td><%= job.dtd_soluongcantuyen %></td>
+                </tr>
+                <tr>
+                    <td>Ngày bắt đầu</td>
+                    <td><%= job.dtd_ngaybatdau.toDateString() %></td>
+                </tr>
+                <tr>
+                    <td>Ngày kết thúc</td>
+                    <td><%= job.dtd_ngayketthuc.toDateString()%></td>
+                </tr>
+            </tbody>
+          </table>
+    </div>
+</main>
+
+<footer>
+    <%- include('../partials/footer'); %>
+</footer>
+
+<script>
+    <%- include('../partials/script'); %>
+</script>
+
+</body>
+</html>

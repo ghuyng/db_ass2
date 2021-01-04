@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <%- include('../partials/head'); %>
+</head>
+<body class="container">
+
+<header>
+    <%- include('../partials/header'); %>
+</header>
+
+<main>
+    <div class="w3-content" style="max-width:2000px;margin-top:46px">
+        <h1 class="w3-padding-large w3-center">
+            DANH SÁCH CÁC BUỔI TẬP HUẤN CỦA CÔNG TY
+        </h1>
+        <table class="w3-table w3-bordered w3-padding-64 w3-content w3-centered w3-hoverable" style="max-width: 1200px;">
+            <thead>
+              <tr>
+                <th scope="col">Mã tập huấn</th>
+                <th scope="col">Tên công ty đối tác</th>
+                <th scope="col">Địa điểm</th>
+                <th scope="col">Thời gian</th>
+                <th scope="col">Chủ đề</th>
+                <th scope="col">Mã số phòng ban</th>
+                <th scope="col"></th>
+                <th scope="col"></th>
+                <th scope="col"></th>
+              </tr>
+            </thead>
+            <tbody>
+                <% ds_taphuan.forEach((x) => { %>
+                    <tr>
+                        <td><%= x.th_maso %></td>
+                        <td><%= x.th_tenctydoitac %></td>
+                        <td><%= x.th_diadiem %></td>
+                        <td><%= x.th_thoigian.toDateString()%></td>
+                        <td><%= x.th_chude %></td>
+                        <td><%= x.th_masophongban %></td>
+                        <td><a href="/taphuan/<%= x.th_maso %>"> Xem ds tham gia</a></td>
+                        <td><a href="/taphuan/<%= x.th_maso %>/update">
+                            <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                        </a></td>
+                        <td><a href="">
+                            <i class="fa fa-trash" aria-hidden="true" onclick="sendDelete(event, <%= x.th_maso %>)"></i>
+                        </a>
+                        </td>
+                    </tr>
+                <% }) %>
+            </tbody>
+        </table>
+        <a class="w3-block w3-center w3-btn w3-blue w3-margin-top" href="/taphuan/new"><h3>Thêm một buổi tập huấn mới</h3></a>
+    </di>
+</main>
+
+<footer>
+    <%- include('../partials/footer'); %>
+</footer>
+
+<script>
+    <%- include('../partials/script'); %>
+
+    function sendDelete(event, id){
+        console.log('dleted')
+        event.preventDefault();
+        // xhttp.open("DELETE", this.href, true);
+        // xhttp.send(); 
+        $.ajax({
+            type: "DELETE",
+            url: `taphuan/${id}`,
+            data: {method: 'delete'},
+            success: function (data) {
+                console.log(data);
+                window.location.reload();
+            },
+            error: function (data) {
+                console.log('Error:', data);
+            }
+        });
+    }
+</script>
+
+</body>
+</html>

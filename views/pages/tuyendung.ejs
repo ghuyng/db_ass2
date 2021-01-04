@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <%- include('../partials/head'); %>
+</head>
+<body class="container">
+
+<header>
+    <%- include('../partials/header'); %>
+</header>
+
+<main>
+    <div class="w3-content" style="max-width:2000px;margin-top:46px">
+        <h1 class="w3-padding-large w3-center">
+            DANH SÁCH CÁC VỊ TRÍ ĐANG CẦN TUYỂN DỤNG
+        </h1>
+        <table class="w3-table w3-bordered w3-padding-64 w3-content w3-centered w3-hoverable" style="max-width: 1200px;">
+            <thead>
+              <tr>
+                <th scope="col">Mã phòng ban</th>
+                <th scope="col">Tên phòng ban</th>
+                <th scope="col">Mã công việc</th>
+                <th scope="col">Tên công việc </th>
+                <th scope="col">Số lượng cần tuyển </th>
+                <th scope="col"></th>
+                <th scope="col"></th>
+                <th scope="col"></th>
+              </tr>
+            </thead>
+            <tbody>
+                <% jobs.forEach((job) => { %>
+                    <tr>
+                        <td><%= job.pb_maso %></td>
+                        <td><%= job.pb_ten %></td>
+                        <td><%= job.cv_macongviec %></td>
+                        <td><%= job.cv_tencongviec %></td>
+                        <td><%= job.dtd_soluongcantuyen %></td>
+                        <td><a href="/tuyendung/<%= job.cv_macongviec %>"> Xem chi tiết </a></td>
+                        <td><a href="/tuyendung/<%= job.cv_macongviec %>">
+                            <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                        </a></td>
+                        <td><a href="">
+                            <i class="fa fa-trash" aria-hidden="true" onclick="sendDelete(event, <%= job.dtd_madot %>)"></i>
+                        </a>
+                        </td>
+                    </tr>
+                <% }) %>
+            </tbody>
+        </table>
+        <a class="w3-block w3-center" href="/tuyendung/new"><h3>Mở một đợt tuyển dụng mới</h3></a>
+    </div>
+</main>
+
+<footer>
+    <%- include('../partials/footer'); %>
+</footer>
+
+<script>
+    <%- include('../partials/script'); %>
+
+    function sendDelete(event, id){
+        console.log('dleted')
+        event.preventDefault();
+        // xhttp.open("DELETE", this.href, true);
+        // xhttp.send(); 
+        $.ajax({
+            type: "DELETE",
+            url: `tuyendung/${id}`,
+            data: {method: 'delete'},
+            success: function (data) {
+                console.log(data);
+                window.location.reload();
+            },
+            error: function (data) {
+                console.log('Error:', data);
+                window.location.reload();
+            }
+        });
+    }
+</script>
+
+</body>
+</html>

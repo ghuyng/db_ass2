@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <%- include('../partials/head'); %>
+</head>
+<body class="container">
+
+<header>
+    <%- include('../partials/header'); %>
+</header>
+
+<main>
+    <div class="w3-content" style="max-width:2000px;margin-top:46px">
+        <h1 class="w3-padding-large w3-center">
+            Danh sách tham gia tập huấn
+        </h1>
+        <table class="w3-table w3-padding-64 w3-content " style="max-width: 1200px;">
+            <thead>
+              <tr>
+                <th scope="col">Mã nhân viên</th>
+                <th scope="col">Họ và tên</th>
+                <th scope="col">SĐT</th>
+                <th scope="col">Giới tính</th>
+                <th scope="col">Vai trò</th>
+              </tr>
+            </thead>
+            <tbody>
+                <% data.forEach((nhanvien) => { %>
+                <tr>
+                    <td><%= nhanvien.nv_manv %></td>
+                    <td><%= nhanvien.name %></td>
+                    <td><%= nhanvien.nld_sdt %></td>
+                    <td><%= nhanvien.nld_gioitinh %></td>
+                    <td><%= nhanvien.tgth_vaitro %></td>
+                </tr>
+                <% }) %>
+            </tbody>
+          </table>
+          <div class="w3-center w3-margin-top">
+                <button class="w3-btn w3-blue" onclick="toggleDisplay()""><h4>Thêm nhân viên</h4></a>
+          </div>
+          <div class="w3-content" style="display: none;" id="update_nv">
+                <form class="w3-container" action="/taphuan/<%= th_maso %>/add-employee" method="POST">
+                    <label>Mã nhân viên</label>
+                    <input class="w3-input" type="text" name="manv">
+                    <label>Vai trò</label>
+                    <input class="w3-input" type="text" name="vaitro">
+                    <input type="submit" class="w3-btn w3-blue w3-block w3-margin-top" value="Xác nhận">
+                </form>
+          </div>
+    </div>
+</main>
+
+<footer>
+    <%- include('../partials/footer'); %>
+</footer>
+
+<script>
+    <%- include('../partials/script'); %>
+
+function toggleDisplay() {
+    var x = document.getElementById("update_nv");
+    if (x.style.display === "none") {
+        x.style.display = "block";
+    } else {
+        x.style.display = "none";
+    }
+}
+</script>
+
+</body>
+</html>
