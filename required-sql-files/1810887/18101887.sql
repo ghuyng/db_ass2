@@ -1,3 +1,4 @@
+
 -- 1a1
  select
 	*
@@ -367,10 +368,8 @@ create trigger dan_trigger_update_nguoilaodong after
 update
 	on
 	nguoilaodong for each row execute function dan_trigger_fn_update_nguoilaodong();
-
 -- 3. delete trigger
-
-create or replace
+ create or replace
 view lam_cong_viec as
 select
 	*
@@ -413,7 +412,62 @@ create trigger dan_trigger_delete_lam_cong_viec instead of
 delete
 	on
 	lam_cong_viec for each row execute function dan_trigger_fn_delete_lam_cong_viec();
-
-
 -- 4.
---create or replace function tong_thoi_gian_di_thieu_theo_thang(department int) return 
+ create or replace
+function tong_thoi_gian_di_thieu_nam_nay(department int) returns interval language plpgsql as $$
+--
+ declare total interval := 0;
+
+ngay_cham_cong record;
+
+begin
+--
+ if not department in (
+select
+	p.pb_maso
+from
+	phongban p) then raise exception 'Phong ban % khong ton tai',
+department ;
+end if;
+
+for ngay_cham_cong in (
+select
+	*
+from
+	(nhanvien n
+join lamvieccho l on
+	n.nv_quoctich = l.lvc_quoctich
+	and n.nv_masocmnd = l.lvc_masocmnd
+join phongban p2 on
+	p2.pb_maso = l.lvc_masophongban
+join hopdong h2 on
+	h2.hd_mahopdong = l.lvc_mahopdong)
+join bangcong b2 on
+	b2.bc_maso = n.nv_masobangcong
+join ngaylamviec n2 on
+	n2.nlv_mabangcong = b2.bc_maso
+where
+	l.lvc_masophongban = department
+	and h2.hd_trangthai = 'Active') loop
+--
+ continue
+when extract (year
+from
+current_date) <> extract (year
+from
+ngay_cham_cong.nlv_ngay);
+
+if ngay_cham_cong.nlv_giovaolam > ngay_cham_cong.bc_giovaolamquydinh then total := total - ngay_cham_cong.bc_giovaolamquydinh + ngay_cham_cong.nlv_giovaolam;
+end if;
+
+if ngay_cham_cong.nlv_giorave < ngay_cham_cong.bc_gioravequydinh then total := total + ngay_cham_cong.bc_gioravequydinh - ngay_cham_cong.nlv_giorave;
+end if;
+end loop ;
+
+return total;
+end;
+
+$$;
+
+select
+	tong_thoi_gian_di_thieu_nam_nay(5);
