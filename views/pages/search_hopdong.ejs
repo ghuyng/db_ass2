@@ -24,7 +24,7 @@
                 <th scope="col">Ngày bắt đầu</th>
                 <th scope="col">Ngày kết thúc</th>
                 <th scope="col">Mã công việc</th>
-                <th scope="col">Thêm</th>
+                <th scope="col">Thông tin thêm</th>
                 <th scope="col"></th>
                 <th scope="col"></th>
               </tr>
@@ -41,8 +41,16 @@
                             <td><%= hopdong.hd_ngayketthuc.toDateString() %></td>
                             <td><%= hopdong.hd_macongviec %></td>
                             <td><a href="/hopdong/moreinfo/<%= hopdong.hd_mahopdong %>"> Xem chi tiết </a> 
-                            <td><a href="/hopdong/update/<%= hopdong.hd_mahopdong %>"> Sửa </a> 
-                            <td><a href="/hopdong/delete/<%= hopdong.hd_mahopdong %>"> Xóa </a> 
+                                <td>
+                                    <form  action="http://localhost:3000/hopdong/update/<%= hopdong.hd_mahopdong %>">
+                                        <input type="submit" name="btnSuaHopDong" value="Sửa" />
+                                    </form>
+                                </td>
+                                <td>
+                                    <form  action="http://localhost:3000/hopdong/delete/<%= hopdong.hd_mahopdong %>">
+                                        <input type="submit" name="btnXoaHopDong" value="Xóa" />
+                                    </form>
+                                </td>
                         </tr>
                     <% }) %>
                 </tr>

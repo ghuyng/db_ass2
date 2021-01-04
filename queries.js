@@ -58,7 +58,7 @@ const getContractById = (request, response) => {
 
 const getContractByName = (request, response) => {
     var ten = request.body.Ten;
-    db.any("SELECT * FROM hopdong WHERE hd_ten= '"+ten+"'::varchar ")
+    db.any("SELECT * FROM hopdong WHERE hd_ten= '"+ten+"'::varchar ORDER BY hd_mahopdong ASC")
         .then(data => {
             response.render('pages/search_hopdong', {conList: data})
         })
