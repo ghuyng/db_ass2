@@ -8,7 +8,7 @@ const cn = {
     port: '5432',
     database: 'ass2',
     user: 'postgres',
-    password: 'cao9duoiNaruto',
+    password: 'postword',
 }
 
 var db = pgp(cn)
