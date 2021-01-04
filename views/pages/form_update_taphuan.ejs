@@ -25,6 +25,9 @@
             <input class="w3-input" type="number" name="masophongban" value="<%= data.th_masophongban %>">
             <input type="submit" class="w3-btn w3-blue w3-block w3-margin-top" value="Lưu thay đổi">
         </form>
+        <% if (message != null) { %>
+                <i class="w3-display-container w3-tag w3-red w3-margin-top"><%= message %></i>
+        <% } %>
     </div>
 </main>
 <footer>

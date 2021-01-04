@@ -2,6 +2,20 @@
 <html lang="en">
 <head>
     <%- include('../partials/head'); %>
+<style>
+#myInput {
+  background-image: url('/css/searchicon.png');
+  background-position: 10px 10px;
+  background-repeat: no-repeat;
+  width: 90%;
+  font-size: 16px;
+  padding: 12px 20px 12px 40px;
+  border: 1px solid #ddd;
+  margin-bottom: 12px;
+  margin-left: 30px;
+}
+</style>
+
 </head>
 <body class="container">
 
@@ -14,15 +28,18 @@
         <h1 class="w3-padding-large w3-center">
             DANH SÁCH CÁC BUỔI TẬP HUẤN CỦA CÔNG TY
         </h1>
-        <table class="w3-table w3-bordered w3-padding-64 w3-content w3-centered w3-hoverable" style="max-width: 1200px;">
+
+        <input type="text" id="myInput" onkeyup="search()" placeholder="Tìm kiếm theo tên công ty.." title="Type in a name">
+
+        <table id="myTable" class="w3-table w3-bordered w3-padding-64 w3-content w3-centered w3-hoverable" style="max-width: 1200px;">
             <thead>
               <tr>
-                <th scope="col">Mã tập huấn</th>
-                <th scope="col">Tên công ty đối tác</th>
-                <th scope="col">Địa điểm</th>
-                <th scope="col">Thời gian</th>
-                <th scope="col">Chủ đề</th>
-                <th scope="col">Mã số phòng ban</th>
+                <th><button scope="col" onclick="sortTable(0)" class="w3-block w3-center w3-btn w3-blue w3-margin-top">Mã tập huấn</button></th>
+                <th><button scope="col" onclick="sortTable(1)" class="w3-block w3-center w3-btn w3-blue w3-margin-top">Tên công ty đối tác</button></th>
+                <th><button scope="col" onclick="sortTable(2)" class="w3-block w3-center w3-btn w3-blue w3-margin-top">Địa điểm</button></th>
+                <th><button scope="col" onclick="sortTable(3)" class="w3-block w3-center w3-btn w3-blue w3-margin-top">Thời gian</button></th>
+                <th><button scope="col" onclick="sortTable(4)" class="w3-block w3-center w3-btn w3-blue w3-margin-top">Chủ đề</button></th>
+                <th><button scope="col" onclick="sortTable(5)" class="w3-block w3-center w3-btn w3-blue w3-margin-top">Mã số phòng ban</button></th>
                 <th scope="col"></th>
                 <th scope="col"></th>
                 <th scope="col"></th>
@@ -50,7 +67,9 @@
             </tbody>
         </table>
         <a class="w3-block w3-center w3-btn w3-blue w3-margin-top" href="/taphuan/new"><h3>Thêm một buổi tập huấn mới</h3></a>
-    </di>
+
+    </div>
+
 </main>
 
 <footer>
@@ -63,21 +82,78 @@
     function sendDelete(event, id){
         console.log('dleted')
         event.preventDefault();
-        // xhttp.open("DELETE", this.href, true);
-        // xhttp.send(); 
+        //xhttp.open("DELETE", this.href, true);
+        //xhttp.send();
         $.ajax({
             type: "DELETE",
             url: `taphuan/${id}`,
             data: {method: 'delete'},
             success: function (data) {
-                console.log(data);
+                //console.log(data);
+                alert("Success");
                 window.location.reload();
             },
             error: function (data) {
+                alert("Cần xóa các nhân viên đã tham gia ở buổi tập huấn này trước");
                 console.log('Error:', data);
             }
         });
     }
+
+function sortTable(index) {
+  var table, rows, switching, i, x, y, shouldSwitch;
+  table = document.getElementById("myTable");
+  switching = true;
+  /*Make a loop that will continue until
+  no switching has been done:*/
+  while (switching) {
+    //start by saying: no switching is done:
+    switching = false;
+    rows = table.rows;
+    /*Loop through all table rows (except the
+    first, which contains table headers):*/
+    for (i = 1; i < (rows.length - 1); i++) {
+      //start by saying there should be no switching:
+      shouldSwitch = false;
+      /*Get the two elements you want to compare,
+      one from current row and one from the next:*/
+      x = rows[i].getElementsByTagName("TD")[index];
+      y = rows[i + 1].getElementsByTagName("TD")[index];
+      //check if the two rows should switch place:
+      if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
+        //if so, mark as a switch and break the loop:
+        shouldSwitch = true;
+        break;
+      }
+    }
+    if (shouldSwitch) {
+      /*If a switch has been marked, make the switch
+      and mark that a switch has been done:*/
+      rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+      switching = true;
+    }
+  }
+}
+
+function search() {
+  var input, filter, table, tr, td, i, txtValue;
+  input = document.getElementById("myInput");
+  filter = input.value.toUpperCase();
+  table = document.getElementById("myTable");
+  tr = table.getElementsByTagName("tr");
+  for (i = 0; i < tr.length; i++) {
+    td = tr[i].getElementsByTagName("td")[1];
+    if (td) {
+      txtValue = td.textContent || td.innerText;
+      if (txtValue.toUpperCase().indexOf(filter) > -1) {
+        tr[i].style.display = "";
+      } else {
+        tr[i].style.display = "none";
+      }
+    }
+  }
+}
+
 </script>
 
 </body>

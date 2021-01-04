@@ -8,7 +8,7 @@ const cn = {
     port: '5432',
     database: 'ass2',
     user: 'postgres',
-    password: 'postword',
+    password: 'cao9duoiNaruto',
 }
 
 var db = pgp(cn)
@@ -99,7 +99,8 @@ const insertTapHuan = (request, response) => {
             response.status(200).redirect('/taphuan')
         })
         .catch(err => {
-            response.status(404).send(err.message)
+            //response.status(404).send(err.message)
+            response.render('pages/form_motaphuan',{message: err.message})
         })
 }
 
@@ -129,20 +130,23 @@ const xoaDotTapHuan = (request, response) => {
 }
 
 const updateTapHuan = (request, response) => {
+    var a = 1
     const id = request.params.id
     const {tenctydoitac, diadiem, thoigian, chude, masophongban} = request.body
     db.one(`UPDATE taphuan 
-            SET th_tenctydoitac = ${tenctydoitac},
-                th_diadiem = ${diadiem},
-                th_thoigian = ${thoigian},
-                th_chude = ${chude},
-                th_masophongban = ${masophongban}
-            WHERE th_maso = $1`, [id])
+            SET th_tenctydoitac = $1,
+                th_diadiem = $2,
+                th_thoigian = $3,
+                th_chude = $4,
+                th_masophongban = $5
+            WHERE th_maso = $6`, [tenctydoitac, diadiem, thoigian, chude, masophongban, id])
         .then(data => {
-            response.status(200).redirect(`/taphuan/${id}`)
+            a = data
+            response.status(200).redirect(`/taphuan`)
         })
         .catch(err => {
-            response.status(404).send(err.message)
+            //response.status(404).send(err.message)
+            response.render('pages/form_update_taphuan', {data: a, message: err.message})
         })
 }
 
@@ -150,7 +154,7 @@ const editTapHuan = (request, response) => {
     const id = request.params.id
     db.one(`SELECT * FROM taphuan WHERE th_maso = $1`, [id])
         .then(data => {
-            response.status(200).render('pages/form_update_taphuan', {data:data})
+            response.status(200).render('pages/form_update_taphuan', {data:data, message: null})
         })
         .catch(err => {
             response.status(404).send(err.message)
