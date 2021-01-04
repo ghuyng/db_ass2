@@ -11,6 +11,12 @@
 
 <main>
     <div class="w3-content" style="max-width:2000px;margin-top:46px">
+        <div class="w3-content" style="max-width:1200px">
+            <form class = "w3-center" action="/hopdong/search" method="POST" enctype="application/x-www-form-urlencoded">
+                <input class="w3-input" type="text" name="Ten" placeholder="Search: contract name">
+            </form>
+        </div>
+
         <h1 class="w3-padding-large w3-center">
             DANH SÁCH CÁC HỢP ĐỒNG
         </h1>
@@ -24,19 +30,35 @@
                 <th scope="col">Ngày bắt đầu</th>
                 <th scope="col">Ngày kết thúc</th>
                 <th scope="col">Mã công việc</th>
+                <th scope="col">Thông tin thêm</th>
+                <th scope="col">  
+                    <form  action="http://localhost:3000/hopdong/insert">
+                        <input type="submit" name="btnThemHopDong" value="Thêm" />
+                    </form>
                 <th scope="col"></th>
               </tr>
             </thead>
             <tbody>
-                <% empList.forEach((hopdong) => { %>
+                <% conList.forEach((hopdong) => { %>
                     <tr>
                         <td><%= hopdong.hd_mahopdong %></td>
                         <td><%= hopdong.hd_ten %></td>
                         <td><%= hopdong.hd_trangthai %></td>
                         <td><%= hopdong.hd_loaihopdong %></td>
-                        <td><%= hopdong.hd_ngaybatdau %></td>
-                        <td><%= hopdong.hd_ngayketthuc %></td>
+                        <td><%= hopdong.hd_ngaybatdau.toDateString() %></td>
+                        <td><%= hopdong.hd_ngayketthuc.toDateString() %></td>
                         <td><%= hopdong.hd_macongviec %></td>
+                        <td><a href="/hopdong/moreinfo/<%= hopdong.hd_mahopdong %>"> Xem chi tiết </a> 
+                        <td>
+                            <form  action="http://localhost:3000/hopdong/update/<%= hopdong.hd_mahopdong %>">
+                                <input type="submit" name="btnSuaHopDong" value="Sửa" />
+                            </form>
+                        </td>
+                        <td>
+                            <form  action="http://localhost:3000/hopdong/delete/<%= hopdong.hd_mahopdong %>">
+                                <input type="submit" name="btnXoaHopDong" value="Xóa" />
+                            </form>
+                        </td>
                     </tr>
                 <% }) %>
             </tbody>

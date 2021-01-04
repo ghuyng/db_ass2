@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <%- include('../partials/head'); %>
+</head>
+<body class="container">
+
+<header>
+    <%- include('../partials/header'); %>
+</header>
+
+<main>
+    <div class="w3-content" style="max-width:300px;margin-top:100px">
+        <h1 class="w3-padding-large w3-center">
+            Sửa hợp đồng
+        </h1>
+            <form class = "w3-container" action="../update" method="POST" enctype="application/x-www-form-urlencoded">
+                <input type="hidden" name="MaHopDong" value= <%= hopdong.hd_mahopdong %> /> <br/>
+                <table>
+                    <tr>
+                        <td>Tên hợp đồng</td>
+                        <td><input type="text" name="Ten" value= "<%= hopdong.hd_ten %>" /></td>
+                    </tr>
+                    <tr> 
+                        <td>Trạng thái</td>
+                        <td><input type="text" name="TrangThai" value="<%= hopdong.hd_trangthai %>" /></td>
+                    </tr>
+                    <tr> 
+                        <td>Loại hợp đồng</td>
+                        <td><input type="text" name="LoaiHopDong" value="<%= hopdong.hd_loaihopdong %>" /></td>
+                    </tr>
+                    <tr> 
+                        <td>Ngày bắt đầu</td>
+                        <td><input type="text" name="NgayBatDau" value="<%= hopdong.hd_ngaybatdau.toDateString() %>" /> </td>
+                    </tr>
+                    <tr> 
+                        <td>Ngày kết thúc</td>
+                        <td><input type="text" name="NgayKetThuc" value="<%= hopdong.hd_ngayketthuc.toDateString() %>"/></td>
+                    </tr>
+                    <tr> 
+                        <td>Mã công việc</td>
+                        <td><input type="text" name="MaCongViec" value=<%= hopdong.hd_macongviec %> /> </td>
+                    </tr>    
+                    <tr>
+                        <td></td>
+                        <td class = "w3-center"><input type="submit" name="btnSua" value="Sửa" /></td>
+                    </tr>
+                </table>
+            </form>
+    </div>
+</main>
+
+<footer>
+    <%- include('../partials/footer'); %>
+</footer>
+
+<script>
+    <%- include('../partials/script'); %>
+</script>
+
+</body>
+</html>

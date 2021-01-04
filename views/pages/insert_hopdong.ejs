@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <%- include('../partials/head'); %>
+</head>
+<body class="container">
+
+<header>
+    <%- include('../partials/header'); %>
+</header>
+
+<main>
+    <div class="w3-content" style="max-width:300px;margin-top:100px">
+        <h1 class="w3-center">
+            Thêm hợp đồng
+        </h1>
+            <form class = "w3-container" action="" method="POST" enctype="application/x-www-form-urlencoded" >
+                <table>
+                    <tr>
+                        <td>Tên hợp đồng</td>
+                        <td><input type="text" name="Ten" placeholder="Tên hợp đồng" /></td>
+                    </tr>
+                    <tr> 
+                        <td>Trạng thái</td>
+                        <td><input type="text" name="TrangThai" placeholder="Trạng thái" /></td>
+                    </tr>
+                    <tr> 
+                        <td>Loại hợp đồng</td>
+                        <td><input type="text" name="LoaiHopDong" placeholder="Loại hợp đồng" /></td>
+                    </tr>
+                    <tr> 
+                        <td>Ngày bắt đầu</td>
+                        <td><input type="date" name="NgayBatDau" placeholder="Ngày bắt đầu" /></td>
+                    </tr>
+                    <tr> 
+                        <td>Ngày kết thúc</td>
+                        <td><input type="date" name="NgayKetThuc" placeholder="Ngày kết thúc" /></td>
+                    </tr>
+                    <tr> 
+                        <td>Mã công việc</td>
+                        <td><input type="text" name="MaCongViec" placeholder="Mã công việc" /></td>
+                    </tr>    
+                    <tr>
+                        <td></td>
+                        <td class = "w3-center" ><input type="submit" name="btnThem" value="Thêm" /></td>
+                    </tr>
+                </table>
+            </form>
+    </div>
+</main>
+
+<footer>
+    <%- include('../partials/footer'); %>
+</footer>
+
+<script>
+    <%- include('../partials/script'); %>
+</script>
+
+</body>
+</html>
