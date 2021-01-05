@@ -1,7 +1,13 @@
 
 -- 1a1
  select
-	*
+	bhv_truong,
+	bhv_chuyennganh,
+	bhv_gpa,
+	nld_ho,
+	nld_tendem,
+	nld_ten,
+	nld_ngaysinh
 from
 	((banghocvan b
 join chungchi c on
@@ -119,6 +125,9 @@ end;
 $$;
 
 select
+	liet_ke_dot_tuyen_dung_co_so_luong_nhieu_hon(-1);
+
+select
 	liet_ke_dot_tuyen_dung_co_so_luong_nhieu_hon(0);
 --2.2
  create or replace
@@ -176,187 +185,13 @@ insert
 -- 3. update trigger
  create or replace
 function dan_trigger_fn_update_nguoilaodong() returns trigger language plpgsql as $$ begin
-update
-	nhanvien
-set
-	nhanvien.NV_MaSoCMND = new.nld_masocmnd
-where
-	nhanvien.NV_MaSoCMND = old.nld_masocmnd;
+--	
+ if current_date < new.nld_ngaysinh then raise exception 'Ngay sinh moi qua moi.';
 
-update
-	nhanvien
-set
-	nhanvien.NV_QuocTich = new.nld_quoctich
-where
-	nhanvien.NV_QuocTich = old.nld_quoctich;
+return null;
+end if;
 
-update
-	nguoixinviec
-set
-	nguoixinviec.NXV_MaSoCMND = new.nld_masocmnd
-where
-	nguoixinviec.NXV_MaSoCMND = old.nld_masocmnd;
-
-update
-	nguoixinviec
-set
-	nguoixinviec.NXV_QuocTich = new.nld_quoctich
-where
-	nguoixinviec.NXV_QuocTich = old.nld_quoctich;
-
-update
-	buoiphongvan
-set
-	buoiphongvan.BPV_MaSoCMND = new.nld_masocmnd
-where
-	buoiphongvan.BPV_MaSoCMND = old.nld_masocmnd;
-
-update
-	buoiphongvan
-set
-	buoiphongvan.BPV_QuocTich = new.nld_quoctich
-where
-	buoiphongvan.BPV_QuocTich = old.nld_quoctich;
-
-update
-	luong
-set
-	luong.L_MaSoCMND = new.nld_masocmnd
-where
-	luong.L_MaSoCMND = old.nld_masocmnd;
-
-update
-	luong
-set
-	luong.L_QuocTich = new.nld_quoctich
-where
-	luong.L_QuocTich = old.nld_quoctich;
-
-update
-	nguoithan
-set
-	nguoithan.NT_MaSoCMND_NV = new.nld_masocmnd
-where
-	nguoithan.NT_MaSoCMND_NV = old.nld_masocmnd;
-
-update
-	nguoithan
-set
-	nguoithan.NT_QuocTich_NV = new.nld_quoctich
-where
-	nguoithan.NT_QuocTich_NV = old.nld_quoctich;
-
-update
-	chungchi
-set
-	chungchi.CC_MaSoCMND = new.nld_masocmnd
-where
-	chungchi.CC_MaSoCMND = old.nld_masocmnd;
-
-update
-	chungchi
-set
-	chungchi.CC_QuocTich = new.nld_quoctich
-where
-	chungchi.CC_QuocTich = old.nld_quoctich;
-
-update
-	duocnhanboi
-set
-	duocnhanboi.DNB_MaSoCMND = new.nld_masocmnd
-where
-	duocnhanboi.DNB_MaSoCMND = old.nld_masocmnd;
-
-update
-	duocnhanboi
-set
-	duocnhanboi.DNB_QuocTich = new.nld_quoctich
-where
-	duocnhanboi.DNB_QuocTich = old.nld_quoctich;
-
-update
-	thamgiaphongvan
-set
-	thamgiaphongvan.TGPV_MaSoCMND_NV = new.nld_masocmnd
-where
-	thamgiaphongvan.TGPV_MaSoCMND_NV = old.nld_masocmnd;
-
-update
-	thamgiaphongvan
-set
-	thamgiaphongvan.TGPV_QuocTich_NV = new.nld_quoctich
-where
-	thamgiaphongvan.TGPV_QuocTich_NV = old.nld_quoctich;
-
-update
-	thamgiaphongvan
-set
-	thamgiaphongvan.TGPV_MaSoCMND_NguoiXinViec = new.nld_masocmnd
-where
-	thamgiaphongvan.TGPV_MaSoCMND_NguoiXinViec = old.nld_masocmnd;
-
-update
-	thamgiaphongvan
-set
-	thamgiaphongvan.TGPV_QuocTich_NguoiXinViec = new.nld_quoctich
-where
-	thamgiaphongvan.TGPV_QuocTich_NguoiXinViec = old.nld_quoctich;
-
-update
-	thamgiataphuan
-set
-	thamgiataphuan.TGTH_MaSoCMND = new.nld_masocmnd
-where
-	thamgiataphuan.TGTH_MaSoCMND = old.nld_masocmnd;
-
-update
-	thamgiataphuan
-set
-	thamgiataphuan.TGTH_QuocTich = new.nld_quoctich
-where
-	thamgiataphuan.TGTH_QuocTich = old.nld_quoctich;
-
-update
-	lamviectren
-set
-	lamviectren.LVT_MaSoCMND = new.nld_masocmnd
-where
-	lamviectren.LVT_MaSoCMND = old.nld_masocmnd;
-
-update
-	lamviectren
-set
-	lamviectren.LVT_QuocTich = new.nld_quoctich
-where
-	lamviectren.LVT_QuocTich = old.nld_quoctich;
-
-update
-	thoigianlam
-set
-	thoigianlam.TGL_MaSoCMND = new.nld_masocmnd
-where
-	thoigianlam.TGL_MaSoCMND = old.nld_masocmnd;
-
-update
-	thoigianlam
-set
-	thoigianlam.TGL_QuocTich = new.nld_quoctich
-where
-	thoigianlam.TGL_QuocTich = old.nld_quoctich;
-
-update
-	lamviecho
-set
-	lamviecho.LVC_MaSoCMND = new.nld_masocmnd
-where
-	lamviecho.LVC_MaSoCMND = old.nld_masocmnd;
-
-update
-	lamviecho
-set
-	lamviecho.LVC_QuocTich = new.nld_quoctich
-where
-	lamviecho.LVC_QuocTich = old.nld_quoctich;
+return new;
 end;
 
 $$;
@@ -364,7 +199,7 @@ $$;
 drop trigger if exists dan_trigger_update_nguoilaodong on
 nguoilaodong;
 
-create trigger dan_trigger_update_nguoilaodong after
+create trigger dan_trigger_update_nguoilaodong before
 update
 	on
 	nguoilaodong for each row execute function dan_trigger_fn_update_nguoilaodong();
@@ -468,6 +303,9 @@ return total;
 end;
 
 $$;
+
+--select
+--	tong_thoi_gian_di_thieu_nam_nay(-1);
 
 select
 	tong_thoi_gian_di_thieu_nam_nay(5);
