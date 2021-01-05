@@ -17,21 +17,30 @@
 	<table class="w3-table w3-bordered w3-padding-64 w3-content w3-centered w3-hoverable" style="max-width: 1200px;">
 	    <thead>
 	      <tr>
-		<th scope="col">Mã nhân viên</th>
 		<th scope="col">Quốc tịch</th>
 		<th scope="col">Mã số cmnd</th>
-		<th scope="col">Mã số bảng công</th>
-		<th scope="col"></th>
+		<th scope="col">Số điện thoại</th>
+		<th scope="col">Email</th>
+		<th scope="col">Địa chỉ</th>
+    <th scope="col">Giới tính</th>
+    <th scope="col"> Ngày sinh </td>
+    <th scope="col"> Tên </td>
 	      </tr>
 	    </thead>
 	    <tbody>
-		<% empList.forEach((nhanvien) => { %>
-		    <tr>
-			<td><%= nhanvien.nv_manv %></td>
-			<td><%= nhanvien.nv_quoctich %></td>
-			<td><%= nhanvien.nv_masocmnd %></td>
-			<td><%= nhanvien.nv_masobangcong %></td>
-			<td><a href="/nhanvien/<%= nhanvien.manv %>"> Xem chi tiết </a></td>
+		<% empList.forEach((nguoilaodong) => { %>
+						      <tr>
+
+    <td><%= nguoilaodong.nld_quoctich %> </td>
+    <td><%= nguoilaodong.nld_masocmnd %> </td>
+    <td><%= nguoilaodong.nld_sdt %> </td>
+    <td><%= nguoilaodong.nld_email %> </td>
+    <td><%= nguoilaodong.nld_diachi %> </td>
+    <td><%= nguoilaodong.nld_gioitinh %> </td>
+    <td><%= nguoilaodong.nld_ngaysinh %> </td>
+    <td><%= nguoilaodong.nld_ho + " " + nguoilaodong.nld_tendem + " " + nguoilaodong.nld_ten %> </td>
+
+			<td><a href="/nguoilaodong/<%= nguoilaodong.manv %>"> Xem chi tiết </a></td>
 		    </tr>
 		<% }) %>
 	    </tbody>

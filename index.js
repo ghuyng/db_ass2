@@ -9,7 +9,7 @@ app.set('view engine', 'ejs')
 app.use(bodyParser.json())
 app.use(
     bodyParser.urlencoded({
-        extended: true,
+	extended: true,
     })
 )
 
@@ -19,6 +19,8 @@ app.get('/', (request, response) => {
 
 app.get('/nhanvien', db.getUsers)
 app.get('/nhanvien/:id', db.getUserById)
+
+app.get('/nguoilaodong', db.getWorkers)
 
 app.listen(port, ()=>{
     console.log(`App running on port ${port}.`)
