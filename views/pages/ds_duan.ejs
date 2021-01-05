@@ -69,8 +69,14 @@
                     <form class="w3-container" action="/duan/" method="POST">
                         <label for="ten">Tên dự án : </label>
                         <input class="w3-input" type="text" name="ten" id="ten"> <br><br>
-                        <label for="trangthai">Trạng thái : </label>
-                        <input class="w3-input" type="text" name="trangthai" id="trangthai"><br><br>
+                        <label>Trạng thái : </label>
+                            <input type="radio" class="w3-radio" id="tt1" name="trangthai" value="On hold">
+                            <label for="tt1">Tạm hoãn</label>
+                            <input type="radio" class="w3-radio"id="tt2" name="trangthai" value="In progress">
+                            <label for="age2">Đang tiến hành</label>  
+                            <input type="radio" class="w3-radio"id="tt3" name="trangthai" value="Completed">
+                            <label for="tt3">Đã kết thúc</label> <br><br>
+                        <!-- <input class="w3-input" type="text" name="trangthai" id="trangthai"><br><br> -->
                         <label>Mã số phòng ban :<label>
                         <input class="w3-input" type="number" name="masophongban" id="masophongban"><br><br>
                         <input type="submit" class="w3-btn w3-blue w3-block w3-margin-top w3-margin-bottom" value="Lưu dự án">

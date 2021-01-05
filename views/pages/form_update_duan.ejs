@@ -15,8 +15,14 @@
         <form class="w3-container" action="/duan/<%= data.da_maso %>/update" method="POST">
             <label>Tên dự án</label>
             <input class="w3-input" type="text" name="tenduan" value="<%= data.da_ten %>">
-            <label>Trạng thái</label>
-            <input class="w3-input" type="text" name="trangthai" value="<%= data.da_trangthai %>">
+            <label>Trạng thái : </label>
+                <input type="radio" class="w3-radio" id="On hold" name="trangthai" value="On hold" >
+                <label for="tt1">Tạm hoãn</label>
+                <input type="radio" class="w3-radio"id="In progress" name="trangthai" value="In progress">
+                <label for="age2">Đang tiến hành</label>  
+                <input type="radio" class="w3-radio"id="Completed" name="trangthai" value="Completed">
+                <label for="tt3">Đã kết thúc</label> <br><br>
+            <!-- <input class="w3-input" type="text" name="trangthai" value="<%= data.da_trangthai %>"> -->
             <label>Mã số phòng ban<label>
             <input class="w3-input" type="number" name="masophongban" value="<%= data.da_masophongban %>">
             <input type="submit" class="w3-btn w3-blue w3-block w3-margin-top" value="Lưu thay đổi">
@@ -29,6 +35,7 @@
 
 <script>
     <%- include('../partials/script'); %>
+
 </script>
 
 </body>
