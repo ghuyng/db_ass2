@@ -39,7 +39,7 @@ app.delete('/tuyendung/:id', db.deleteDotTuyenDung)
 //Routing for tap huan
 app.get('/taphuan', db.xemDSTapHuan)
 app.get('/taphuan/new', (request, response) =>{
-    response.render('pages/form_motaphuan')
+    response.render('pages/form_motaphuan', {message: null})
 })
 
 app.post('/taphuan/new', db.insertTapHuan)
