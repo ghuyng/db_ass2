@@ -438,6 +438,6 @@ module.exports = {
     updateContract,
     deleteContract,
     moreInfoAboutContract,
-}
     getWorkers,
+
 }
