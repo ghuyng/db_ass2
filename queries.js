@@ -410,7 +410,6 @@ const moreInfoAboutContract = (request,response) =>{
 module.exports = {
     getUsers,
     getUserById,
-<<<<<<< HEAD
     getRecruitmentInfo,
     getRecruitmentJobById,
     addNewDotTuyenDung,
@@ -440,7 +439,5 @@ module.exports = {
     deleteContract,
     moreInfoAboutContract,
 }
-=======
     getWorkers,
 }
->>>>>>> 824a7d7ba0b5c8bcd7521617ac30b44f7277d021

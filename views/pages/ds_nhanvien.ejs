@@ -11,7 +11,6 @@
 
 <main>
     <div class="w3-content" style="max-width:2000px;margin-top:46px">
-<<<<<<< HEAD
         <h1 class="w3-padding-large w3-center">
             DANH SÁCH CÁC NHÂN VIÊN
         </h1>
@@ -37,33 +36,6 @@
                 <% }) %>
             </tbody>
           </table>
-=======
-	<h1 class="w3-padding-large w3-center">
-	    DANH SÁCH CÁC NHÂN VIÊN
-	</h1>
-	<table class="w3-table w3-bordered w3-padding-64 w3-content w3-centered w3-hoverable" style="max-width: 1200px;">
-	    <thead>
-	      <tr>
-		<th scope="col">Mã nhân viên</th>
-		<th scope="col">Quốc tịch</th>
-		<th scope="col">Mã số cmnd</th>
-		<th scope="col">Mã số bảng công</th>
-		<th scope="col"></th>
-	      </tr>
-	    </thead>
-	    <tbody>
-		<% empList.forEach((nhanvien) => { %>
-		    <tr>
-			<td><%= nhanvien.nv_manv %></td>
-			<td><%= nhanvien.nv_quoctich %></td>
-			<td><%= nhanvien.nv_masocmnd %></td>
-			<td><%= nhanvien.nv_masobangcong %></td>
-			<td><a href="/nhanvien/<%= nhanvien.manv %>"> Xem chi tiết </a></td>
-		    </tr>
-		<% }) %>
-	    </tbody>
-	  </table>
->>>>>>> 824a7d7ba0b5c8bcd7521617ac30b44f7277d021
     </div>
 </main>
 
