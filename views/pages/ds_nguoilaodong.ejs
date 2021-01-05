@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <%- include('../partials/head'); %>
+</head>
+<body class="container">
+
+<header>
+    <%- include('../partials/header'); %>
+</header>
+
+<main>
+    <div class="w3-content" style="max-width:2000px;margin-top:46px">
+	<h1 class="w3-padding-large w3-center">
+	    DANH SÁCH CÁC NHÂN VIÊN
+	</h1>
+	<table class="w3-table w3-bordered w3-padding-64 w3-content w3-centered w3-hoverable" style="max-width: 1200px;">
+	    <thead>
+	      <tr>
+		<th scope="col">Quốc tịch</th>
+		<th scope="col">Mã số cmnd</th>
+		<th scope="col">Số điện thoại</th>
+		<th scope="col">Email</th>
+		<th scope="col">Địa chỉ</th>
+    <th scope="col">Giới tính</th>
+    <th scope="col"> Ngày sinh </td>
+    <th scope="col"> Tên </td>
+	      </tr>
+	    </thead>
+	    <tbody>
+		<% empList.forEach((nguoilaodong) => { %>
+						      <tr>
+
+    <td><%= nguoilaodong.nld_quoctich %> </td>
+    <td><%= nguoilaodong.nld_masocmnd %> </td>
+    <td><%= nguoilaodong.nld_sdt %> </td>
+    <td><%= nguoilaodong.nld_email %> </td>
+    <td><%= nguoilaodong.nld_diachi %> </td>
+    <td><%= nguoilaodong.nld_gioitinh %> </td>
+    <td><%= nguoilaodong.nld_ngaysinh %> </td>
+    <td><%= nguoilaodong.nld_ho + " " + nguoilaodong.nld_tendem + " " + nguoilaodong.nld_ten %> </td>
+
+			<td><a href="/nguoilaodong/<%= nguoilaodong.manv %>"> Xem chi tiết </a></td>
+		    </tr>
+		<% }) %>
+	    </tbody>
+	  </table>
+    </div>
+</main>
+
+<footer>
+    <%- include('../partials/footer'); %>
+</footer>
+
+<script>
+    <%- include('../partials/script'); %>
+</script>
+
+</body>
+</html>

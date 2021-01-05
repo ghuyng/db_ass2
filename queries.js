@@ -16,23 +16,33 @@ var db = pgp(cn)
 
 const getUsers = (request, response) => {
     db.any('SELECT * FROM nhanvien')
-        .then(data => {
-            response.render('pages/ds_nhanvien', {empList : data})
-        })
-        .catch(err =>{
-            response.status(404).send('Not Found')
-        })
+	.then(data => {
+	    response.render('pages/ds_nhanvien', {empList : data})
+	})
+	.catch(err =>{
+	    response.status(404).send('Not Found')
+	})
 }
 
 const getUserById = (request, response) => {
     const id = request.params.id
     db.one('SELECT * FROM nhanvien WHERE nv_manv=$1', [id])
-        .then(data => {
-            response.render('pages/nhanvien', {nhanvien: data})
-        })
-        .catch(err => {
-            response.status(404).send('Not Found')
-        })
+	.then(data => {
+	    response.render('pages/nhanvien', {nhanvien: data})
+	})
+	.catch(err => {
+	    response.status(404).send('Not Found')
+	})
+}
+
+const getWorkers = (request, response) => {
+    db.any('SELECT * FROM nguoilaodong')
+	.then(data => {
+	    response.render('pages/ds_nguoilaodong', {empList : data})
+	})
+	.catch(err =>{
+	    response.status(404).send('Not Found')
+	})
 }
 
 const getRecruitmentInfo = (request, response) => {
@@ -400,6 +410,7 @@ const moreInfoAboutContract = (request,response) =>{
 module.exports = {
     getUsers,
     getUserById,
+<<<<<<< HEAD
     getRecruitmentInfo,
     getRecruitmentJobById,
     addNewDotTuyenDung,
@@ -429,3 +440,7 @@ module.exports = {
     deleteContract,
     moreInfoAboutContract,
 }
+=======
+    getWorkers,
+}
+>>>>>>> 824a7d7ba0b5c8bcd7521617ac30b44f7277d021

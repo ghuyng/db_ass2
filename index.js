@@ -11,7 +11,7 @@ app.set('view engine', 'ejs')
 app.use(bodyParser.json())
 app.use(
     bodyParser.urlencoded({
-        extended: true,
+	extended: true,
     })
 )
 
@@ -22,6 +22,7 @@ app.get('/', (request, response) => {
 app.get('/nhanvien', db.getUsers)
 app.get('/nhanvien/:id', db.getUserById)
 
+<<<<<<< HEAD
 
 // Routing for tuyen dung
 app.get('/tuyendung', db.getRecruitmentInfo)
@@ -75,6 +76,9 @@ app.post('/hopdong/update',urlencodedParser, db.updateContract)
 app.get('/hopdong/delete/:id', db.deleteContract)
 app.get('/hopdong/moreinfo/:id', db.moreInfoAboutContract)
 app.post('/hopdong/search',urlencodedParser, db.getContractByName)
+=======
+app.get('/nguoilaodong', db.getWorkers)
+>>>>>>> 824a7d7ba0b5c8bcd7521617ac30b44f7277d021
 
 app.listen(port, ()=>{
     console.log(`App running on port ${port}.`)
