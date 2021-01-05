@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <%- include('../partials/head'); %>
+</head>
+<body class="container">
+
+<header>
+    <%- include('../partials/header'); %>
+</header>
+
+<main>
+    <div class="w3-content" style="max-width:2000px;margin-top:46px">
+        <h1 class="w3-padding-large w3-center">
+            THÔNG TIN VỀ HỢP ĐỒNG
+        </h1>
+        <table class="w3-table w3-bordered w3-padding-64 w3-content w3-lefted w3-hoverable" style="max-width: 500px;">
+            <thead>
+              <tr>
+                <th scope="col"></th>
+                <th scope="col"></th>
+              </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Mã hợp đồng</td>
+                    <td><%= info.hd_mahopdong %></td>
+                </tr>
+                <tr>
+                    <td>Tên nhân viên</td>
+                    <td><%= info.nld_ho %> <%= info.nld_tendem %> <%= info.nld_ten %></td>
+                </tr>
+                <tr>
+                    <td>Quốc tịch</td>
+                    <td><%= info.nv_quoctich %></td>
+                </tr>
+                <tr>
+                    <td>Mã số CMND</td>
+                    <td><%= info.nv_masocmnd %></td>
+                </tr>
+                    <td>Số điện thoại</td>
+                    <td><%= info.nld_sdt %></td>
+                <tr>
+                    <td>Mã số phòng ban</td>
+                    <td><%= info.lvc_masophongban %></td>
+                </tr>
+                    <td>Ngày bắt đầu</td>
+                    <td><%= info.hd_ngaybatdau.toDateString() %></td>
+                <tr>
+                    <td>Ngày kết thúc</td>
+                    <td><%= info.hd_ngayketthuc.toDateString() %></td>
+                </tr>
+                <tr>
+                    <td>Thông tin nhân viên</td>
+                    <td><a href="/nhanvien/<%= info.nv_manv %>"> Xem chi tiết </a></td>
+                </tr>
+            </tbody>
+          </table>
+    </div>
+</main>
+
+<footer>
+    <%- include('../partials/footer'); %>
+</footer>
+
+<script>
+    <%- include('../partials/script'); %>
+</script>
+
+</body>
+</html>
