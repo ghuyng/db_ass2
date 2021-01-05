@@ -38,6 +38,7 @@ create table PhongBan(
     foreign key (PB_MaSoBoPhan) references BoPhan(BP_MaSo)
 );
 
+drop type if exists TT_DuAn;
 create type TT_DuAn as enum ('In progress', 'On hold', 'Completed');
 create table DuAn(
     DA_MaSo serial primary key ,
@@ -72,6 +73,7 @@ create table CongViec(
     foreign key (CV_MaSoPhongBan) references PhongBan(PB_MaSo)
 );
 
+drop type if exists TT_HopDong;
 create type TT_HopDong as enum ('Expired', 'Terminated', 'Active');
 create table HopDong(
     HD_MaHopDong serial primary key ,
