@@ -307,6 +307,9 @@ const deleteProjectPartner = (request, response) => {
         })
         .catch(err => {
             response.status(404).send(err.message)
+        })
+}
+
 const getContracts = (request, response) => {
     db.any('SELECT * FROM hopdong ORDER BY hd_mahopdong ASC')
         .then(data => {
