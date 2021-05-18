@@ -14,3 +14,7 @@ Change your username, password, database, port,... inside: `const cn = [ ... ]`
 `node index.js`
 4. The website will be at:  
 localhost:3000/  
+
+# ERD for reference:
+
+![](/images/EERD.png "")
