@@ -2,9 +2,10 @@ const express = require('express')
 const bodyParser = require('body-parser')
 const app = express()
 const port = 3000
-// const db = require('./queries')
 const { response, request } = require('express')
 var urlencodedParser = bodyParser.urlencoded({ extended: false })
+
+// const db = require('./queries')
 
 app.set('view engine', 'ejs')
 
@@ -18,6 +19,9 @@ app.use(
 app.get('/', (request, response) => {
     response.render('pages/index')
 })
+
+const scripts = require('./scripts')
+app.get('/login', scripts.login)
 
 // app.get('/nhanvien', db.getUsers)
 // app.get('/nhanvien/:id', db.getUserById)

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <%- include('../partials/head'); %>
+</head>
+<body class="container">
+
+<header>
+    <%- include('../partials/header'); %>
+</header>
+
+<main>
+    <div class="w3-content" style="max-width:2000px;margin-top:46px">
+        <table class="w3-table w3-bordered w3-padding-64 w3-content w3-centered" style="max-width: 1200px;">
+            <thead>
+              <tr>
+                <th scope="col"></th>
+                <th scope="col"></th>
+              </tr>
+            </thead>
+            <tbody>
+                <% for(field in {}){ %>
+                    <tr>
+                        <td><%= field %></td>
+                        <td><%= nhanvien[field] %></td>
+                    </tr>
+                <% } %>
+            </tbody>
+          </table>
+    </div>
+</main>
+<footer>
+    <%- include('../partials/footer'); %>
+</footer>
+
+<script>
+    <%- include('../partials/script'); %>
+</script>
+
+</body>
+</html>
